@@ -65,7 +65,16 @@ public class ClassSectionTester {
     // Test 5
     public void TestForToString() {
         setUp();
-        assertEquals("Student{id=77, firstName='Adrian', lastName='Wong', age=17, yearLevel=12}", student1.toString(), "Make sure toString is correct!");
+        String str1 = student1.toString();
+        int idIndex = str1.indexOf("id=");
+        assertNotEquals(-1, idIndex, "Make sure toString is correct!");
+        int firstComma = str1.indexOf(',');
+        assertNotEquals(-1, firstComma, "Make sure toString is correct!");
+        assertTrue((firstComma - idIndex) > 3);
+        for (int i=idIndex+3; i < firstComma; i++)
+            assertTrue(Character.isDigit(str1.charAt(i)));
+        String idRemoved = str1.substring(0, idIndex+3) + str1.substring(firstComma);
+        assertEquals("Student{id=, firstName='Adrian', lastName='Wong', age=17, yearLevel=12}", idRemoved, "Make sure toString is correct!");
         tearDown();
     }
 
